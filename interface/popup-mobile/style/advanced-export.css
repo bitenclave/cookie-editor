@@ -1,0 +1,127 @@
+#advanced-toggle-all {
+  float: right;
+  display: none;
+}
+
+.advanced-form {
+  display: none;
+}
+.advanced-form.show {
+  display: block;
+}
+.advanced-toggle-container {
+  text-align: center;
+}
+
+.advanced-toggle {
+  padding: 10px;
+  margin: 6px;
+  border-radius: 3px;
+  border: 1px solid var(--primary-border-color);
+  background-color: var(--primary-surface-color);
+  color: var(--secondary-text-color);
+  user-select: none;
+  display: inline-block;
+}
+
+#advanced-toggle-all {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  user-select: none;
+}
+#advanced-toggle-all label {
+  cursor: pointer;
+}
+#advanced-toggle-all input {
+  vertical-align: middle;
+  position: relative;
+  bottom: 2px;
+}
+
+.checkbox-list {
+  margin-top: 7px;
+}
+.checkbox-list label {
+  padding: 15px 0;
+  margin: 10px 0;
+  border: 1px solid var(--primary-border-color);
+  background-color: var(--primary-surface-color);
+  color: var(--primary-text-color);
+}
+.checkbox-list input {
+  vertical-align: middle;
+  position: relative;
+  bottom: 2px;
+  margin-left: 15px;
+}
+
+#export-menu {
+  border-radius: 5px;
+  position: fixed;
+  bottom: 80px;
+  right: 15px;
+  min-width: 100px;
+  background-color: var(--menu-surface-color);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+  padding: 10px;
+  text-align: center;
+  margin-left: 10px;
+}
+
+#export-menu:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 25px;
+  width: 0;
+  height: 0;
+  border-top: solid 10px var(--menu-surface-color);
+  border-left: solid 15px transparent;
+  border-right: solid 15px transparent;
+}
+
+.button-bar-top #export-menu {
+  top: 142px;
+  bottom: auto;
+}
+.button-bar-top #export-menu:after {
+  top: auto;
+  bottom: 100%;
+  border-top: none;
+  border-bottom: solid 10px var(--menu-surface-color);
+}
+
+#export-menu button {
+  background-color: var(--menu-surface-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--menu-border-color);
+  border-radius: 3px;
+  padding: 20px 30px;
+  font-size: 14px;
+  transition: all 100ms linear;
+  width: 100%;
+  margin-bottom: 8px;
+}
+#export-menu button:hover {
+  border-color: var(--primary-outline-color);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+#export-menu button:last-child {
+  margin-bottom: 0;
+}
+
+@media only screen and (max-device-width: 400px) and (orientation: landscape) {
+  html,
+  body {
+    min-height: 160px;
+  }
+}
+@media only screen and (min-device-width: 800px) {
+  html,
+  body {
+    min-width: 400px;
+  }
+}

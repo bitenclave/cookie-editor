@@ -1,9 +1,41 @@
 import js from '@eslint/js';
-import google from 'eslint-config-google';
 import prettierConfig from 'eslint-config-prettier';
 import prettier from 'eslint-plugin-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
+
+const projectRules = {
+  camelcase: ['error', { properties: 'never' }],
+  curly: ['error', 'multi-line'],
+  'guard-for-in': 'error',
+  'new-cap': 'error',
+  'no-array-constructor': 'error',
+  'no-caller': 'error',
+  'no-extend-native': 'error',
+  'no-extra-bind': 'error',
+  'no-invalid-this': 'error',
+  'no-multi-spaces': 'error',
+  'no-multi-str': 'error',
+  'no-new-object': 'error',
+  'no-new-wrappers': 'error',
+  'no-throw-literal': 'error',
+  'no-unused-vars': ['error', { args: 'none' }],
+  'no-var': 'error',
+  'no-with': 'error',
+  'one-var': [
+    'error',
+    {
+      var: 'never',
+      let: 'never',
+      const: 'never',
+    },
+  ],
+  'prefer-const': ['error', { destructuring: 'all' }],
+  'prefer-promise-reject-errors': 'error',
+  'prefer-rest-params': 'error',
+  'prefer-spread': 'error',
+  'quote-props': ['error', 'consistent'],
+};
 
 export default [
   // Global ignores
@@ -19,9 +51,6 @@ export default [
 
   // Base configuration for JS/MJS files
   js.configs.recommended,
-
-  // Google's style guide
-  google,
 
   // Main custom configuration
   {
@@ -39,6 +68,7 @@ export default [
       },
     },
     rules: {
+      ...projectRules,
       'prettier/prettier': 'error',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',

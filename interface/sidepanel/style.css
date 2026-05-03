@@ -1,40 +1,92 @@
 html,
 body {
-  height: 100%;
-  min-width: auto;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 0;
-  margin: 0;
   width: 100%;
-  font-size: 1em;
+  height: 100%;
+  min-width: 0;
+}
+
+body.sidepanel-mode {
+  --app-width: 100%;
+  --app-height: 100vh;
+
+  width: 100%;
+  min-width: 0;
+  height: var(--app-height);
+  padding: 0;
   overflow: hidden;
 }
-.notransition *, .notransition *::before {
-  -webkit-transition: none !important;
-  -moz-transition: none !important;
-  -o-transition: none !important;
+
+body.sidepanel-mode .app-shell {
+  width: 100%;
+  height: var(--app-height);
+}
+
+body.sidepanel-mode .cookie-list {
+  display: grid;
+  gap: 8px;
+}
+
+body.sidepanel-mode .tab-panel {
+  padding-bottom: 78px;
+}
+
+body.sidepanel-mode .cookie-sidepanel {
+  width: min(430px, 100%);
+}
+
+body.sidepanel-mode.notransition *,
+body.sidepanel-mode.notransition *::before,
+body.sidepanel-mode.notransition *::after {
   transition: none !important;
 }
-#cookie-container {
-  overflow-y: auto;
-  flex: 1 1 auto;
-  min-height: initial;
-  max-height: initial;
-  min-width: initial;
-  max-width: initial;
+
+@supports (height: 100dvh) {
+  body.sidepanel-mode {
+    --app-height: 100dvh;
+  }
 }
 
-#no-permission > div {
-  font-size: 0.95em;
-  padding: 10px;
+@media (max-width: 520px) {
+  body.sidepanel-mode .toolbar {
+    flex-wrap: wrap;
+  }
+
+  body.sidepanel-mode .toolbar .search-field {
+    flex-basis: 100%;
+  }
+
+  body.sidepanel-mode .icon-button.primary,
+  body.sidepanel-mode .icon-button.danger {
+    flex: 1 1 0;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  #cookie-container {
-    background-color: #202124;
+@media (max-width: 380px) {
+  body.sidepanel-mode .app-header {
+    padding: 12px 10px 9px;
+  }
+
+  body.sidepanel-mode .title-row {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  body.sidepanel-mode #quick-profile {
+    width: 112px;
+  }
+
+  body.sidepanel-mode .tab-panel {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  body.sidepanel-mode .cookie-row {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 9px;
+    padding: 10px;
+  }
+
+  body.sidepanel-mode .badge-row {
+    max-width: 76px;
   }
 }

@@ -1,0 +1,129 @@
+#notification-container {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 90px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 150ms ease-in 0s;
+  pointer-events: none;
+  padding: 0 25px;
+}
+
+.button-bar-top #notification-container {
+  bottom: 30px;
+}
+
+#notification {
+  position: relative;
+  display: inline-block;
+  padding: 10px 25px 10px 20px;
+  margin: auto;
+  background-color: var(--notification-surface-color);
+  border-radius: 5px;
+  color: var(--notification-text-color);
+  font-size: 16px;
+  font-weight: 400;
+  pointer-events: auto;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  opacity: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.fadeInUp {
+  opacity: 0;
+  animation-name: fadeInUp;
+}
+.fadeOutDown {
+  opacity: 0;
+  animation-name: fadeOutDown;
+}
+
+#notification-dismiss {
+  position: absolute;
+  top: 5px;
+  right: 2px;
+  border: none;
+  background: transparent none;
+  cursor: pointer;
+  fill: var(--notification-dismiss-color);
+}
+
+#notification-dismiss svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+#notification:hover #notification-dismiss {
+  fill: var(--notification-dismiss-hover-parent-color);
+}
+#notification:hover #notification-dismiss:hover {
+  fill: var(--notification-dismiss-hover-color);
+}
+
+#notification #notification-dismiss:focus {
+  outline: 2px solid var(--notification-dismiss-hover-parent-color);
+  border-radius: 3px;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, 60px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes fadeOutDown {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate3d(0, 60px, 0);
+    opacity: 0;
+  }
+}
+.anim-value-changed,
+#cookie-container .anim-value-changed {
+  animation-name: changed-value;
+  animation-duration: 0.5s;
+}
+
+@keyframes changed-value {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: var(--changed-surface-color);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.anim-success,
+#cookie-container .anim-success {
+  animation-name: success;
+  animation-duration: 0.5s;
+  border: 1px solid initial;
+}
+
+@keyframes success {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: var(--success-surface-color);
+  }
+  100% {
+    background-color: transparent;
+  }
+}

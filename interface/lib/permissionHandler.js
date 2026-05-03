@@ -49,15 +49,17 @@ export class PermissionHandler {
     const testPermission = {
       origins: [url],
     };
-    try {
-      const { protocol, hostname } = new URL(url);
-      const rootDomain = this.getRootDomainName(hostname);
-      testPermission.origins = [
-        `${protocol}//${hostname}/*`,
-        `${protocol}//*.${rootDomain}/*`,
-      ];
-    } catch (err) {
-      console.error(err);
+    if (!this.isPermissionPattern(url)) {
+      try {
+        const { protocol, hostname } = new URL(url);
+        const rootDomain = this.getRootDomainName(hostname);
+        testPermission.origins = [
+          `${protocol}//${hostname}/*`,
+          `${protocol}//*.${rootDomain}/*`,
+        ];
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     // If we don't have access to the permission API, assume we have
@@ -80,17 +82,28 @@ export class PermissionHandler {
     const permission = {
       origins: [url],
     };
-    try {
-      const { protocol, hostname } = new URL(url);
-      const rootDomain = this.getRootDomainName(hostname);
-      permission.origins = [
-        `${protocol}//${hostname}/*`,
-        `${protocol}//*.${rootDomain}/*`,
-      ];
-    } catch (err) {
-      console.error(err);
+    if (!this.isPermissionPattern(url)) {
+      try {
+        const { protocol, hostname } = new URL(url);
+        const rootDomain = this.getRootDomainName(hostname);
+        permission.origins = [
+          `${protocol}//${hostname}/*`,
+          `${protocol}//*.${rootDomain}/*`,
+        ];
+      } catch (err) {
+        console.error(err);
+      }
     }
     return this.browserDetector.getApi().permissions.request(permission);
+  }
+
+  /**
+   * Checks if a permission target is already a browser origin pattern.
+   * @param {string} url
+   * @return {boolean}
+   */
+  isPermissionPattern(url) {
+    return url === '<all_urls>' || String(url).includes('*');
   }
 
   /**

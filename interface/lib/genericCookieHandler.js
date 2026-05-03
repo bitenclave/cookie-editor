@@ -139,8 +139,9 @@ export class GenericCookieHandler extends EventEmitter {
    * @param {string} url The url that the cookie is attached to.
    * @param {function} callback
    * @param {boolean} isRecursive
+   * @param {string} storeId
    */
-  removeCookie(name, url, callback, isRecursive = false) {
+  removeCookie(name, url, callback, isRecursive = false, storeId = null) {
     // Bad hack on safari because cookies needs to have the very exact same domain
     // to be able to delete it.
     // TODO: Check if this hack is needed on devtools.
@@ -158,7 +159,7 @@ export class GenericCookieHandler extends EventEmitter {
         .cookies.remove({
           name: name,
           url: url,
-          storeId: this.currentTab.cookieStoreId,
+          storeId: storeId || this.currentTab.cookieStoreId,
         })
         .then(callback, function (e) {
           console.error('Failed to remove cookies', e);
@@ -171,7 +172,7 @@ export class GenericCookieHandler extends EventEmitter {
         {
           name: name,
           url: url,
-          storeId: this.currentTab.cookieStoreId,
+          storeId: storeId || this.currentTab.cookieStoreId,
         },
         cookieResponse => {
           const error = this.browserDetector.getApi().runtime.lastError;

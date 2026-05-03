@@ -1,7 +1,101 @@
-// eslint-disable-next-line no-undef
-module.exports = function (grunt) {
-  // Project configuration.
-  grunt.initConfig({
+const allBrowsers = ['firefox', 'chrome', 'edge', 'opera', 'safari'];
+const zippedBrowsers = ['firefox', 'chrome', 'edge', 'opera'];
+
+function configForTargets(targets, factory) {
+  return Object.fromEntries(targets.map(target => [target, factory(target)]));
+}
+
+function currentTargetManifest() {
+  return 'manifest.<%= grunt.task.current.target %>.json';
+}
+
+function manifestRewriteTarget() {
+  return {
+    files: [
+      {
+        src: currentTargetManifest(),
+        dest: currentTargetManifest(),
+      },
+    ],
+  };
+}
+
+function cleanTarget(target) {
+  return [`build/${target}`];
+}
+
+function copyTarget(grunt) {
+  return {
+    files: [
+      copyFile('cookie-editor.js'),
+      copyTree('interface/**'),
+      copyTree('icons/**'),
+      copyManifest(grunt),
+    ],
+  };
+}
+
+function copyFile(src) {
+  return {
+    expand: true,
+    src: [src],
+    dest: 'build/<%= grunt.task.current.target %>/',
+    filter: 'isFile',
+  };
+}
+
+function copyTree(src) {
+  return {
+    expand: true,
+    src: [src],
+    dest: 'build/<%= grunt.task.current.target %>/',
+  };
+}
+
+function copyManifest(grunt) {
+  return {
+    expand: true,
+    src: currentTargetManifest(),
+    dest: 'build/<%= grunt.task.current.target %>/',
+    filter: 'isFile',
+    rename(dest, src) {
+      return dest + src.replace('.' + grunt.task.current.target, '');
+    },
+  };
+}
+
+function replaceTarget() {
+  return {
+    files: [
+      {
+        expand: true,
+        flatten: true,
+        src: ['interface/lib/env.js'],
+        dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
+      },
+    ],
+  };
+}
+
+function compressTarget() {
+  return {
+    options: {
+      archive:
+        'dist/<%= pkg.version %>/<%= pkg.name %>-<%= grunt.task.current.target %>-<%= pkg.version %>.zip',
+    },
+    files: [
+      {
+        expand: true,
+        cwd: 'build/<%= grunt.task.current.target %>/',
+        src: ['**'],
+        dest: '/',
+      },
+    ],
+  };
+}
+
+function buildConfig(grunt) {
+  return {
     pkg: grunt.file.readJSON('package.json'),
     'json-replace': {
       options: {
@@ -10,204 +104,13 @@ module.exports = function (grunt) {
           version: '<%= pkg.version %>',
         },
       },
-      firefox: {
-        files: [
-          {
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'manifest.<%= grunt.task.current.target %>.json',
-          },
-        ],
-      },
-      chrome: {
-        files: [
-          {
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'manifest.<%= grunt.task.current.target %>.json',
-          },
-        ],
-      },
-      edge: {
-        files: [
-          {
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'manifest.<%= grunt.task.current.target %>.json',
-          },
-        ],
-      },
-      opera: {
-        files: [
-          {
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'manifest.<%= grunt.task.current.target %>.json',
-          },
-        ],
-      },
-      safari: {
-        files: [
-          {
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'manifest.<%= grunt.task.current.target %>.json',
-          },
-        ],
-      },
+      ...configForTargets(allBrowsers, manifestRewriteTarget),
     },
     exec: {
       lint: 'npm run lint',
     },
-    clean: {
-      firefox: ['build/firefox'],
-      chrome: ['build/chrome'],
-      edge: ['build/edge'],
-      opera: ['build/opera'],
-      safari: ['build/safari'],
-    },
-    copy: {
-      firefox: {
-        files: [
-          {
-            expand: true,
-            src: ['cookie-editor.js'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-          },
-          {
-            expand: true,
-            src: ['interface/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: ['icons/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-            rename: function (dest, src) {
-              return dest + src.replace('.' + grunt.task.current.target, '');
-            },
-          },
-        ],
-      },
-      chrome: {
-        files: [
-          {
-            expand: true,
-            src: ['cookie-editor.js'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-          },
-          {
-            expand: true,
-            src: ['interface/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: ['icons/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-            rename: function (dest, src) {
-              return dest + src.replace('.' + grunt.task.current.target, '');
-            },
-          },
-        ],
-      },
-      edge: {
-        files: [
-          {
-            expand: true,
-            src: ['cookie-editor.js'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-          },
-          {
-            expand: true,
-            src: ['interface/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: ['icons/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-            rename: function (dest, src) {
-              return dest + src.replace('.' + grunt.task.current.target, '');
-            },
-          },
-        ],
-      },
-      opera: {
-        files: [
-          {
-            expand: true,
-            src: ['cookie-editor.js'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-          },
-          {
-            expand: true,
-            src: ['interface/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: ['icons/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-            rename: function (dest, src) {
-              return dest + src.replace('.' + grunt.task.current.target, '');
-            },
-          },
-        ],
-      },
-      safari: {
-        files: [
-          {
-            expand: true,
-            src: ['cookie-editor.js'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-          },
-          {
-            expand: true,
-            src: ['interface/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: ['icons/**'],
-            dest: 'build/<%= grunt.task.current.target %>/',
-          },
-          {
-            expand: true,
-            src: 'manifest.<%= grunt.task.current.target %>.json',
-            dest: 'build/<%= grunt.task.current.target %>/',
-            filter: 'isFile',
-            rename: function (dest, src) {
-              return dest + src.replace('.' + grunt.task.current.target, '');
-            },
-          },
-        ],
-      },
-    },
+    clean: configForTargets(allBrowsers, cleanTarget),
+    copy: configForTargets(allBrowsers, () => copyTarget(grunt)),
     replace: {
       options: {
         patterns: [
@@ -217,131 +120,30 @@ module.exports = function (grunt) {
           },
         ],
       },
-      firefox: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['interface/lib/env.js'],
-            dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
-          },
-        ],
-      },
-      chrome: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['interface/lib/env.js'],
-            dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
-          },
-        ],
-      },
-      edge: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['interface/lib/env.js'],
-            dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
-          },
-        ],
-      },
-      opera: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['interface/lib/env.js'],
-            dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
-          },
-        ],
-      },
-      safari: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['interface/lib/env.js'],
-            dest: 'build/<%= grunt.task.current.target %>/interface/lib/',
-          },
-        ],
-      },
+      ...configForTargets(allBrowsers, replaceTarget),
     },
     removelogging: {
       dist: {
         src: 'build/**/*.js',
       },
     },
-    compress: {
-      firefox: {
-        options: {
-          archive:
-            'dist/<%= pkg.version %>/<%= pkg.name %>-<%= grunt.task.current.target %>-<%= pkg.version %>.zip',
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'build/<%= grunt.task.current.target %>/',
-            src: ['**'],
-            dest: '/',
-          },
-        ],
-      },
-      chrome: {
-        options: {
-          archive:
-            'dist/<%= pkg.version %>/<%= pkg.name %>-<%= grunt.task.current.target %>-<%= pkg.version %>.zip',
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'build/<%= grunt.task.current.target %>/',
-            src: ['**'],
-            dest: '/',
-          },
-        ],
-      },
-      edge: {
-        options: {
-          archive:
-            'dist/<%= pkg.version %>/<%= pkg.name %>-<%= grunt.task.current.target %>-<%= pkg.version %>.zip',
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'build/<%= grunt.task.current.target %>/',
-            src: ['**'],
-            dest: '/',
-          },
-        ],
-      },
-      opera: {
-        options: {
-          archive:
-            'dist/<%= pkg.version %>/<%= pkg.name %>-<%= grunt.task.current.target %>-<%= pkg.version %>.zip',
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'build/<%= grunt.task.current.target %>/',
-            src: ['**'],
-            dest: '/',
-          },
-        ],
-      },
-    },
-  });
+    compress: configForTargets(zippedBrowsers, compressTarget),
+  };
+}
 
-  grunt.loadNpmTasks('grunt-json-replace');
-  grunt.loadNpmTasks('grunt-exec');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-replace');
-  grunt.loadNpmTasks('grunt-remove-logging');
-  grunt.loadNpmTasks('grunt-contrib-compress');
+function loadTasks(grunt) {
+  [
+    'grunt-json-replace',
+    'grunt-exec',
+    'grunt-contrib-clean',
+    'grunt-contrib-copy',
+    'grunt-replace',
+    'grunt-remove-logging',
+    'grunt-contrib-compress',
+  ].forEach(task => grunt.loadNpmTasks(task));
+}
 
-  // Default task(s).
+function registerTasks(grunt) {
   grunt.registerTask('default', [
     'json-replace',
     'exec:lint',
@@ -357,8 +159,11 @@ module.exports = function (grunt) {
     'clean:safari',
     'copy:safari',
     'replace:safari',
-    // Keep logs in Safari for now, otherwise can't easily debug.
-    // Ideally there would be a different build config for dev/prod.
-    // 'removelogging',
   ]);
+}
+
+module.exports = function (grunt) {
+  grunt.initConfig(buildConfig(grunt));
+  loadTasks(grunt);
+  registerTasks(grunt);
 };

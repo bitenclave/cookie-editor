@@ -13,6 +13,7 @@ export class CookieHandlerPopup extends GenericCookieHandler {
     console.log('Constructing PopupCookieHandler');
     this.isReady = false;
     this.currentTabId = null;
+    this.watchAllCookieChanges = false;
 
     if (this.browserDetector.supportsPromises()) {
       this.browserDetector
@@ -51,7 +52,12 @@ export class CookieHandlerPopup extends GenericCookieHandler {
    *     occurred.
    */
   onCookiesChanged = changeInfo => {
-    const domain = changeInfo.cookie.domain.substring(1);
+    if (this.watchAllCookieChanges) {
+      this.emit('cookiesChanged', changeInfo);
+      return;
+    }
+
+    const domain = changeInfo.cookie.domain.replace(/^\./, '');
     if (
       this.currentTab.url.indexOf(domain) !== -1 &&
       changeInfo.cookie.storeId === (this.currentTab.cookieStoreId || '0')
@@ -59,6 +65,14 @@ export class CookieHandlerPopup extends GenericCookieHandler {
       this.emit('cookiesChanged', changeInfo);
     }
   };
+
+  /**
+   * Updates how broadly cookie change events should refresh the popup.
+   * @param {string} scope
+   */
+  setCookieScope(scope) {
+    this.watchAllCookieChanges = scope === 'global';
+  }
 
   /**
    * Handles the event that is fired when a tab is updated.

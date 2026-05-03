@@ -1,0 +1,217 @@
+#searchContainer {
+  display: flex;
+  position: relative;
+}
+
+#cookie-container .search {
+  position: absolute;
+  left: 1em;
+  top: 1.05em;
+}
+
+#cookie-container #searchField {
+  padding: 1em;
+  padding-left: 2.7em;
+  transition: background-color 100ms linear;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: var(--search-surface-color);
+  color: var(--primary-text-color);
+}
+
+#cookie-container #searchField:hover,
+#cookie-container #searchField:focus {
+  background-color: var(--search-surface-hover-color);
+}
+#cookie-container #searchField.content {
+  background-color: var(--search-surface-content-color);
+}
+
+#cookie-container #searchField::placeholder {
+  color: var(--secondary-text-color);
+}
+
+#cookie-container {
+  overflow-y: auto;
+  background-color: #eaeaea;
+  min-height: 100px;
+  flex: 1 1;
+  background-color: var(--secondary-surface-color);
+}
+
+#no-cookies,
+#no-permission,
+#permission-impossible {
+  margin-top: 2em;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+#no-permission {
+  margin: 1em auto;
+}
+
+#no-permission > div {
+  text-align: center;
+  padding-top: 15px;
+}
+
+#no-permission .button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 5px;
+}
+
+#no-permission button {
+  border: 1px solid var(--primary-border-color);
+  border-radius: 3px;
+  background-color: var(--primary-surface-color);
+  color: var(--primary-text-color);
+  padding: 8px 25px;
+  font-size: 14px;
+  transition: all 100ms linear;
+}
+
+#no-permission button:hover {
+  border-radius: 4px;
+  border-color: var(--primary-outline-color);
+}
+
+#no-permission button:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--primary-outline-color);
+}
+
+#cookie-container > .container {
+  padding: 15px;
+  height: 100%;
+}
+
+form.import,
+form.import > div {
+  height: 100%;
+  max-height: 100%;
+}
+form.import > div {
+  display: flex;
+  flex-direction: column;
+}
+#cookie-container form.import textarea {
+  flex: 1 1;
+  max-height: none;
+}
+
+#cookie-container ul {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 15px;
+  list-style-type: none;
+}
+
+#cookie-container li.hide {
+  display: none;
+}
+
+#cookie-container li .header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 1.25em 1em;
+  font-weight: bold;
+  background-color: var(--primary-surface-color);
+  border: 1px solid var(--primary-border-color);
+  position: relative;
+  -moz-user-select: none;
+  user-select: none;
+}
+#cookie-container li .header .btns {
+  display: none;
+}
+
+/* Firefox display outlines in a strange way */
+@-moz-document url-prefix() {
+  #cookie-container li .header:focus {
+    outline-offset: -3px;
+    outline: 2px solid #444;
+    border-radius: 3px;
+  }
+}
+
+#cookie-container li .header .icon {
+  -moz-transition: transform 150ms ease-in 0s;
+  transition: transform 150ms ease-in 0s;
+  margin-right: 10px;
+}
+
+#cookie-container li .header.active .icon {
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+#cookie-container li .header .header-name,
+#cookie-container li .header .header-extra-info {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#cookie-container li .header .header-name {
+  font-weight: 500;
+}
+
+#cookie-container li .header .header-extra-info {
+  flex-shrink: 9999;
+  flex-grow: 1;
+  padding-left: 8px;
+  padding-right: 3px;
+  text-align: right;
+  font-weight: normal;
+  font-size: 0.85em;
+  color: var(--secondary-text-color);
+}
+
+
+#cookie-container li .expando {
+  max-height: 0;
+  display: none;
+  overflow: hidden;
+}
+
+#cookie-container li .expando .wrapper {
+  flex: 1;
+  padding: 0.4em 0.7em;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.container.form label {
+  font-weight: 500;
+  color: var(--secondary-text-onsurface-color);
+}
+
+.form.container div:first-child {
+  margin-bottom: 0.75em;
+}
+
+#cookie-container textarea,
+#cookie-container input[type='text'],
+#cookie-container select {
+  width: 100%;
+  font-size: 1em;
+  font-family: inherit;
+  resize: vertical;
+  margin: 0;
+  padding: 0.65em 0.5em;
+  border: 1px solid var(--secondary-border-color);
+  background-color: var(--primary-surface-color);
+  color: var(--primary-text-color);
+}
+
+#cookie-container textarea {
+  resize: none;
+  height: 70px;
+  max-height: 70px;
+  min-height: 70px;
+}

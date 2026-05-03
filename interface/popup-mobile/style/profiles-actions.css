@@ -1,0 +1,194 @@
+.profile-save-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.profile-save-row button,
+.profile-item-actions button,
+#export-menu button {
+  border: 1px solid var(--primary-border-color);
+  border-radius: 4px;
+  background-color: var(--primary-surface-color);
+  color: var(--primary-text-color);
+}
+
+.profile-save-row button {
+  padding: 14px 16px;
+}
+
+.profiles-panel {
+  margin-top: 18px;
+  border-top: 1px solid var(--primary-border-color);
+  padding-top: 14px;
+}
+
+.profiles-panel-header {
+  margin-bottom: 12px;
+}
+
+.profiles-panel-header h3 {
+  margin: 0 0 4px;
+}
+
+.profiles-panel-header span,
+.profiles-empty,
+.profile-item-meta {
+  color: var(--secondary-text-color);
+}
+
+#profiles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profiles-empty {
+  margin: 0;
+}
+
+.profile-item {
+  border: 1px solid var(--primary-border-color);
+  border-radius: 6px;
+  background-color: var(--primary-surface-color);
+  padding: 12px;
+}
+
+.profile-item-header {
+  margin-bottom: 10px;
+}
+
+.profile-item-name {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.profile-item-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.profile-item-actions button {
+  padding: 12px 8px;
+}
+
+.profile-item-actions button.primary {
+  background-color: var(--button-primary-surface-color);
+  color: var(--button-primary-text-color);
+  border-color: transparent;
+}
+
+label {
+  display: block;
+  margin: 0;
+}
+
+.button-bar {
+  display: none;
+  background-color: var(--primary-surface-color);
+  flex: 0 0 auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  z-index: 5;
+}
+
+.button-bar.active {
+  display: block;
+}
+
+.container.form {
+  flex: 1;
+}
+
+.action-btns {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: stretch;
+  padding: 4px;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.action-btns button {
+  flex: 1 1;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  padding: 18px;
+  color: var(--primary-text-color);
+}
+
+.action-btns button:focus {
+  outline: 2px solid #444;
+  border-radius: 4px;
+}
+
+.action-btns button:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.action-btns button:last-child {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.action-btns svg,
+.action-btns [data-tooltip]::after {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 16px;
+}
+.action-btns [data-tooltip]::after {
+  display: block;
+  content: attr(data-tooltip);
+  margin-top: 4px;
+}
+
+.panel-section-footer {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: row;
+  height: 65px;
+  margin-top: -1px;
+  padding: 0;
+  -moz-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.button-bar-top .panel-section-footer {
+  border-top: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.panel-section-footer-button {
+  flex: 1 1;
+  font-size: 18px;
+  line-height: 0.75em;
+  margin: 0 -1px;
+  padding: 12px;
+  text-align: center;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background-color: var(--secondary-surface-color);
+}
+.panel-section-footer-button:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.panel-section-footer-separator {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 1px;
+  z-index: 99;
+}
+
+.panel-section-footer-button > div {
+  text-align: center;
+}
+.panel-section-footer-button .tooltip {
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-size: 16px;
+  line-height: 30px;
+}

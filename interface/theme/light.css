@@ -17,10 +17,6 @@
   --changed-surface-color: #fdfb8e;
   --success-surface-color: #9ee7a8;
 
-  --ad-surface-color: #b1d7f7;
-  --ad-text-color: #214357;
-  --ad-link-color: #195179;
-
   --search-surface-color: #f5f5f5;
   --search-surface-hover-color: #ffffec;
   --search-surface-content-color: gold;
@@ -38,10 +34,26 @@
   --menu-surface-color: var(--primary-surface-color);
   --menu-surface-hover-color: var(--secondary-surface-color);
   --menu-border-color: var(--primary-border-color);
-  
+
   --switch-surface-handle-color: var(--primary-surface-color);
-  --switch-surface-on-color: #2196F3;
+  --switch-surface-on-color: #2196f3;
   --switch-surface-neutral-color: var(--primary-border-color);
 
   --notice-danger-surface-color: #f8000011;
+
+  --nav-surface-color: var(--primary-surface-color);
+  --nav-active-color: var(--button-primary-surface-color);
+  --nav-active-surface-color: #eef6ff;
+  --chip-surface-color: #eef2f6;
+  --chip-active-surface-color: var(--button-primary-surface-color);
+  --badge-secure-color: #1b7f43;
+  --badge-session-color: #8a6d1d;
+  --badge-httponly-color: #2563a8;
+  --sidepanel-backdrop-color: rgba(0, 0, 0, 0.35);
+  --snackbar-surface-color: var(--notification-surface-color);
+  --snackbar-undo-color: #8fc9eb;
+  --card-surface-color: var(--primary-surface-color);
+  --card-hover-color: #f3f7fb;
+  --dropzone-border-color: var(--secondary-border-color);
+  --dropzone-active-color: var(--button-primary-surface-color);
 }

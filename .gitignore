@@ -30,3 +30,6 @@ xcuserdata/
 .history
 .ionide
 .DS_Store
+
+## Cache
+package-lock.json

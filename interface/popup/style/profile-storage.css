@@ -1,0 +1,143 @@
+.profile-storage {
+  margin-top: 12px;
+  margin-bottom: 0;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  background: var(--card-surface-color);
+}
+
+.profile-storage-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.profile-storage-summary::-webkit-details-marker {
+  display: none;
+}
+
+.profile-storage-summary::marker {
+  content: '';
+}
+
+.profile-storage-summary:focus-visible {
+  outline: 1px solid var(--primary-outline-color);
+  outline-offset: 2px;
+}
+
+.profile-storage-summary-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.profile-storage-title {
+  color: var(--primary-text-color);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.profile-storage-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--secondary-text-color);
+}
+
+.profile-storage-toggle .icon {
+  transition: transform 160ms ease;
+}
+
+.profile-storage[open] .profile-storage-toggle .icon {
+  transform: rotate(180deg);
+}
+
+.profile-storage-body {
+  display: grid;
+  gap: 10px;
+  padding: 0 12px 12px;
+}
+
+.profile-storage-status,
+.profile-group-chip {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  color: var(--secondary-text-onsurface-color);
+  background: var(--chip-surface-color);
+}
+
+.profile-storage-status.cloud {
+  color: var(--button-primary-text-color);
+  background: var(--button-primary-surface-color);
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.segmented-control label {
+  min-width: 0;
+}
+
+.segmented-control input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented-control span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  background: var(--primary-surface-color);
+}
+
+.segmented-control input:checked + span {
+  border-color: transparent;
+  color: var(--button-primary-text-color);
+  background: var(--button-primary-surface-color);
+}
+
+.profile-cloud-settings,
+.profile-storage-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-cloud-settings input {
+  min-width: 0;
+  width: 100%;
+  height: var(--field-height);
+  padding: 0 10px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--primary-text-color);
+  background: var(--primary-surface-color);
+}
+
+.profile-storage-actions {
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+}
+
+.profile-storage-actions .button {
+  min-width: 0;
+  padding: 0 8px;
+}

@@ -1,9 +1,9 @@
 {
 	"manifest_version": 3,
 	"name": "Cookie-Editor",
-	"version": "1.13.0",
-	"author": "Moustachauve",
-	"description": "Simple yet powerful Cookie Editor that allow you to quickly create, edit and delete cookies without leaving your tab.",
+	"version": "2.1.0",
+	"author": "BitEnclave Team",
+	"description": "Simple yet powerful Cookie Editor that lets you quickly create, edit and delete cookies without leaving your tab.",
 	"offline_enabled": true,
 	"background": {
 		"service_worker": "cookie-editor.js",

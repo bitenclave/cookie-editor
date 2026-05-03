@@ -1,73 +1,75 @@
-[![grunt ESLint](https://github.com/Moustachauve/cookie-editor/actions/workflows/npm-grunt.yml/badge.svg)](https://github.com/Moustachauve/cookie-editor/actions/workflows/npm-grunt.yml)
 # Cookie-Editor
-[Cookie-Editor](https://cookie-editor.com/) is a browser extension/add-on that lets you efficiently create, edit and delete cookies for the current tab. Perfect for developing, quickly testing or even manually managing your cookies for your privacy.
+
+Cookie-Editor is a browser extension/add-on for creating, editing, deleting,
+importing and exporting cookies for the current tab.
+
+This repository is maintained by the BitEnclave Team at
+https://github.com/bitenclave/cookie-editor.
+
+## Download
+
+This fork is distributed only through GitHub Releases:
+
+https://github.com/bitenclave/cookie-editor/releases
+
+Download the latest release package from that page and install it manually in
+your browser as an unpacked or sideloaded extension.
 
 ## Description
-Cookie-Editor is designed to have a simple to use interface that let you do most standard cookie operations quickly. It is ideal for developing and testing web pages.
 
-You can easily create, edit and delete a cookie for the current page that you are visiting.
-There is also a handy button to mass delete all the cookies for the current page.
+Cookie-Editor provides a simple interface for common cookie operations while
+developing, testing, debugging, or managing site cookies manually.
 
-Cookie-Editor is available for:
-- Google Chrome
-- Firefox
-- Safari
-- Edge
-- Opera.
+You can:
 
-It should be possible to install it on any webkit browser, but keep in mind that only the previous five browsers are officially supported.
+- Create cookies for the current page
+- Edit existing cookies
+- Delete individual cookies
+- Delete all cookies for the current page
+- Import and export cookies
+- Save reusable cookie profiles locally or against a self-hosted cloud server
 
-Cookie-Editor is available on mobile devices with an interface optimised for touchscreens:
-- Firefox for Android 
-- Safari for iOS
-- Edge for Android and iOS
+## Cloud profile server
 
-## Installation
-### Install on Google Chrome
-Find this extension on the [Chrome Web Store](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm?utm_campaign=github).  
-[![Chrome Web Store](readme/get-chrome.png)](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm?utm_campaign=github)
+Cookie-Editor can store saved cookie profiles in local extension storage or in
+a self-hosted server. The companion server lives at:
 
-### Install on Firefox
-Find this extension on the [Firefox Add-ons site](https://addons.mozilla.org/addon/cookie-editor?utm_campaign=external-github-readme).  
-[![Firefox Add-ons](readme/get-firefox.webp)](https://addons.mozilla.org/addon/cookie-editor?utm_campaign=external-github-readme)
+https://github.com/bitenclave/cookie-server
 
-### Install on Safari
-Cookie-Editor is available for both Mac and iOS. It has been tested on Mac, iPhone and iPad.  
-Find this extension on the [App Store](https://apps.apple.com/app/apple-store/id6446215341?pt=126143671&ct=github&mt=8).  
-[![Apple App Store](readme/get-safari-mac.svg)](https://apps.apple.com/app/apple-store/id6446215341?pt=126143671&ct=github&mt=8)
+Use `cookie-editor` for the browser extension and `cookie-server` when you want
+profile sync backed by your own PostgreSQL database and bearer-token auth.
 
-### Install on Microsoft Edge
-Find this extension on the [Microsoft Store](https://microsoftedge.microsoft.com/addons/detail/cookieeditor/neaplmfkghagebokkhpjpoebhdledlfi).
+## Browser support
 
-### Install on Opera
-Find this extension on the [Opera Extensions site](https://addons.opera.com/en/extensions/details/cookie-editor-2/).  
-[![Opera add-ons](readme/get-opera.png )](https://addons.opera.com/en/extensions/details/cookie-editor-2/)
+This fork is intended for manual installation from the release builds. Browser
+store links for the original extension are intentionally not included here.
 
-## Feature Suggestions or Bug Reports
-To submit a feature suggestion or file a bug report, please [create a new issue here](https://github.com/Moustachauve/cookie-editor/issues).
+## Feature suggestions or bug reports
+
+Please use this repository's Issues tab for feature suggestions and bug reports.
 
 ## How to build
 
-1. Run npm install to make sure you have all the required packages installed.
-2. Run the command `grunt`
-3. All the files are in the `dist` directory created
+1. Run `npm install` to install the required packages.
+2. Run `grunt`.
+3. The built files are created in the `dist` directory.
+
+## Attribution and license
+
+Cookie-Editor v2 is a heavily reworked BitEnclave fork of
+https://github.com/Moustachauve/cookie-editor. We are grateful to the original
+project for the foundation this work started from.
+
+BitEnclave's new work is intended to be MIT-licensed where it is separable from
+upstream-derived code. This distribution preserves the GPL-3.0-only obligations
+inherited from the original project.
 
 ### Note for Safari
 
-Safari needs to be built in Xcode. I have only tested building Cookie-Editor on Xcode 15.
-
-## Thanks
-
-Thanks to DigitalOcean for supporting open-source software.
-
-<p>
-  <a href="https://digitalocean.pxf.io/k0BxXd">
-    <img alt="Powered by DigitalOcean" src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" width="201px">
-  </a>
-</p>
+Safari builds require Xcode.
 
 ## Disclaimer
 
-This project is not an official Google project. It is not supported by
-Google and Google specifically disclaims all warranties as to its quality,
+This project is not an official Google project. It is not supported by Google,
+and Google specifically disclaims all warranties as to its quality,
 merchantability, or fitness for a particular purpose.

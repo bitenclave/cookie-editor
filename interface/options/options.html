@@ -70,6 +70,20 @@
       </div>
 
       <div class="input-container">
+        <label for="export-action">Export Action</label>
+        <select id="export-action" aria-describedby="export-action-hint">
+          <option value="ask">Ask every time</option>
+          <option value="download">Download</option>
+          <option value="copy">Copy</option>
+        </select>
+        <div class="hint" id="export-action-hint">
+          Selects what the export button does when a concrete export format is
+          selected. When the export format is "Ask every time", the export
+          button still opens the format chooser.
+        </div>
+      </div>
+
+      <div class="input-container">
         <label for="extra-info">Show Extra Information</label>
         <select id="extra-info" aria-describedby="v-hint">
           <option value="nothing">Nothing</option>
@@ -114,26 +128,6 @@
           interface instead of the bottom.
         </div>
       </div>
-      
-      <div class="input-container">
-        <label for="ads-enabled">Show Ads</label>
-        <label class="switch">
-          <input type="checkbox" id="ads-enabled" aria-describedby="ads-enabled-hint" />
-          <span class="slider"></span>
-        </label>
-        <div class="hint" id="ads-enabled-hint">
-          When Enabled, Cookie-Editor will display some small non-intrusive ads at the
-          top of the main interface. These are used to cover the basic operating
-          costs of Cookie-Editor. Feel free to disable them, but keep in mind
-          that I work on Cookie-Editor in free time as a personal project.
-          You can thank me with a nice review!
-          <span class="github-sponsor hidden">
-            You can also
-            <a href="https://github.com/sponsors/Moustachauve/" target="_blank">
-              sponsor me on Github</a>.
-          </span>
-        </div>
-      </div>
     </fieldset>
 
     <fieldset>
@@ -172,21 +166,13 @@
     <fieldset>
       <legend>About Cookie-Editor</legend>
       <p>
-        Cookie-Editor is made by Christophe Gagnier and is fully open source.
+        Cookie-Editor v2 is maintained by the BitEnclave Team.
       </p>
       <p>
         View the
-        <a href="https://github.com/Moustachauve/cookie-editor" target="_blank">Source code</a>. Read the
-        <a href="https://cookie-editor.com/privacy.html" target="_blank">Privacy Policy</a>. <br />
-        Cookie-Editor is published under
-        <a href="https://github.com/Moustachauve/cookie-editor/blob/master/LICENSE" target="_blank">the GPL-3.0
-          license</a>.
-      </p>
-      <p class="github-sponsor hidden">
-        <em>Are you enjoying Cookie-Editor?</em><br />
-        I would be really greatful if you considered supporting my work by
-        sponsoring me on Github.
-        <a href="https://github.com/sponsors/Moustachauve/" target="_blank">Learn more</a>.
+        <a href="https://github.com/bitenclave/cookie-editor" target="_blank">Source code</a>. This fork is based on
+        <a href="https://github.com/Moustachauve/cookie-editor" target="_blank">the original Cookie-Editor project</a>,
+        with thanks to its maintainers and contributors.
       </p>
       <p class="disclaimer">
         This project is not an official Google project. It is not supported by
