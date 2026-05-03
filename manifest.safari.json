@@ -3,7 +3,7 @@
 	"name": "Cookie-Editor",
 	"version": "2.1.0",
 	"author": "BitEnclave Team",
-	"description": "Simple powerful Cookie Editor that lets you quickly create, edit and delete cookies without leaving your tab",
+	"description": "A powerful Cookie Editor for tab-based and global cookie management, with fast editing tools and cloud sync.",
 	"offline_enabled": true,
 	"background": {
 		"service_worker": "cookie-editor.js",
