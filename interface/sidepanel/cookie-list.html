@@ -8,6 +8,638 @@
     <title>Cookie-Editor</title>
   </head>
   <body class="notransition sidepanel-mode">
+    <div class="app-shell cookies-active">
+      <header class="app-header">
+        <div class="title-row">
+          <div class="title-copy">
+            <h1>Cookie-Editor</h1>
+            <p id="current-site">Loading current tab...</p>
+          </div>
+          <div class="header-actions">
+            <div class="scope-toggle" aria-label="Cookie scope">
+              <label class="scope-option">
+                <input
+                  type="radio"
+                  name="cookie-scope"
+                  value="local"
+                  checked />
+                <span>
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#location-arrow"></use>
+                  </svg>
+                  Tab
+                </span>
+              </label>
+              <label class="scope-option">
+                <input type="radio" name="cookie-scope" value="global" />
+                <span>
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#globe"></use>
+                  </svg>
+                  Global
+                </span>
+              </label>
+            </div>
+            <button
+              class="icon-button"
+              id="open-options"
+              type="button"
+              aria-label="Open settings"
+              title="Settings">
+              <svg class="icon">
+                <use href="../sprites/solid.svg#cog"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="toolbar cookie-controls">
+          <label class="search-field" for="cookie-search">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#search"></use>
+            </svg>
+            <input
+              id="cookie-search"
+              type="search"
+              autocomplete="off"
+              placeholder="Search cookies" />
+          </label>
+          <button
+            class="icon-button primary"
+            id="add-cookie"
+            type="button"
+            title="Add cookie">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#plus"></use>
+            </svg>
+            <span>Add</span>
+          </button>
+          <button
+            class="icon-button danger"
+            id="delete-all"
+            type="button"
+            title="Delete all visible cookies">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#trash"></use>
+            </svg>
+            <span>Delete All</span>
+          </button>
+        </div>
+        <div class="domain-filter-row cookie-controls">
+          <label class="domain-filter-field" for="cookie-domain-filter">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#globe"></use>
+            </svg>
+            <input
+              id="cookie-domain-filter"
+              type="search"
+              list="cookie-domain-options"
+              autocomplete="off"
+              placeholder="All domains" />
+          </label>
+          <datalist id="cookie-domain-options"></datalist>
+          <button
+            class="icon-button"
+            id="clear-domain-filter"
+            type="button"
+            aria-label="Clear domain filter"
+            title="Clear domain filter"
+            hidden>
+            <svg class="icon">
+              <use href="../sprites/solid.svg#times"></use>
+            </svg>
+          </button>
+        </div>
+        <div class="filter-chips cookie-controls" aria-label="Cookie filters">
+          <button class="chip" type="button" data-filter="session">
+            Session
+          </button>
+          <button class="chip" type="button" data-filter="persistent">
+            Persistent
+          </button>
+          <button class="chip" type="button" data-filter="secure">
+            Secure
+          </button>
+          <button class="chip" type="button" data-filter="httpOnly">
+            HttpOnly
+          </button>
+          <button class="chip" type="button" data-filter="hostOnly">
+            HostOnly
+          </button>
+          <button class="chip" type="button" data-filter="sameSiteNone">
+            SameSite=None
+          </button>
+          <button class="chip" type="button" data-filter="currentDomain">
+            Current Domain
+          </button>
+        </div>
+      </header>
+      <main class="tab-panels">
+        <section class="tab-panel active" id="cookies-panel" data-tab="cookies">
+          <div id="permission-state"></div>
+          <div class="list-meta">
+            <span id="cookie-count">0 cookies</span>
+            <div class="list-actions">
+              <button class="text-button" id="export-all" type="button">
+                <svg class="icon">
+                  <use href="../sprites/solid.svg#file-export"></use>
+                </svg>
+                <span>Export all</span>
+              </button>
+              <button class="text-button" id="select-all" type="button">
+                Select all
+              </button>
+            </div>
+          </div>
+          <div id="cookie-list" class="cookie-list"></div>
+        </section>
+        <section class="tab-panel" id="profiles-panel" data-tab="profiles">
+          <div class="section-toolbar">
+            <label class="search-field compact" for="profile-search">
+              <svg class="icon">
+                <use href="../sprites/solid.svg#search"></use>
+              </svg>
+              <input
+                id="profile-search"
+                type="search"
+                autocomplete="off"
+                placeholder="Search profiles" />
+            </label>
+            <select id="profile-group-filter" aria-label="Filter profile group">
+              <option value="">All groups</option>
+            </select>
+            <select id="profile-sort" aria-label="Sort profiles">
+              <option value="updated">Recent</option>
+              <option value="name">Name</option>
+              <option value="group">Group</option>
+              <option value="count">Cookie count</option>
+            </select>
+          </div>
+          <div class="profile-create">
+            <input
+              id="new-profile-name"
+              type="text"
+              placeholder="Profile name" />
+            <input id="new-profile-group" type="text" placeholder="Group" />
+            <button
+              class="button primary"
+              id="save-current-profile"
+              type="button">
+              Save Current
+            </button>
+          </div>
+          <div id="profiles-list" class="profile-grid"></div>
+          <details class="profile-storage" id="profile-storage-section">
+            <summary class="profile-storage-summary">
+              <span class="profile-storage-summary-title">
+                <span class="profile-storage-title">Profile storage</span>
+                <span id="profile-storage-status" class="profile-storage-status">
+                  Local
+                </span>
+              </span>
+              <span class="profile-storage-toggle">
+                <span id="profile-storage-toggle-label">Show</span>
+                <svg class="icon">
+                  <use href="../sprites/solid.svg#chevron-down"></use>
+                </svg>
+              </span>
+            </summary>
+            <div class="profile-storage-body">
+              <div class="segmented-control">
+                <label>
+                  <input
+                    name="profile-storage-mode"
+                    type="radio"
+                    value="local" />
+                  <span>
+                    <svg class="icon">
+                      <use href="../sprites/solid.svg#database"></use>
+                    </svg>
+                    Local
+                  </span>
+                </label>
+                <label>
+                  <input
+                    name="profile-storage-mode"
+                    type="radio"
+                    value="cloud" />
+                  <span>
+                    <svg class="icon">
+                      <use href="../sprites/solid.svg#cloud"></use>
+                    </svg>
+                    Cloud
+                  </span>
+                </label>
+              </div>
+              <div
+                id="profile-cloud-settings"
+                class="profile-cloud-settings"
+                hidden>
+                <input
+                  id="profile-server-url"
+                  type="url"
+                  autocomplete="off"
+                  placeholder="Server URL" />
+                <input
+                  id="profile-server-token"
+                  type="password"
+                  autocomplete="off"
+                  placeholder="Password or token" />
+              </div>
+              <div class="profile-storage-actions">
+                <button
+                  class="button primary"
+                  id="save-profile-storage"
+                  type="button">
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#save"></use>
+                  </svg>
+                  <span>Save</span>
+                </button>
+                <button
+                  class="button profile-cloud-action"
+                  id="test-profile-storage"
+                  type="button">
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#plug"></use>
+                  </svg>
+                  <span>Test</span>
+                </button>
+                <button
+                  class="button profile-cloud-action"
+                  id="refresh-profile-storage"
+                  type="button">
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#sync-alt"></use>
+                  </svg>
+                  <span>Refresh</span>
+                </button>
+                <button
+                  class="button profile-cloud-action"
+                  id="upload-local-profiles"
+                  type="button">
+                  <svg class="icon">
+                    <use href="../sprites/solid.svg#cloud-upload-alt"></use>
+                  </svg>
+                  <span>Upload Local</span>
+                </button>
+              </div>
+            </div>
+          </details>
+        </section>
+        <section class="tab-panel" id="tools-panel" data-tab="tools">
+          <section class="tool-section">
+            <h2>Export</h2>
+            <div class="tool-grid">
+              <label>
+                Format
+                <select id="export-format">
+                  <option value="json">JSON</option>
+                  <option value="netscape">Netscape</option>
+                  <option value="headerstring">Headers</option>
+                </select>
+              </label>
+              <label>
+                Scope
+                <select id="export-scope">
+                  <option value="all">All visible</option>
+                  <option value="selected">Selected</option>
+                  <option value="currentDomain">Current domain</option>
+                </select>
+              </label>
+            </div>
+            <div class="export-actions">
+              <button class="button primary" id="copy-export" type="button">
+                <svg class="icon">
+                  <use href="../sprites/solid.svg#copy"></use>
+                </svg>
+                <span>Copy</span>
+              </button>
+              <div class="download-actions" aria-label="Download export">
+                <button class="button" type="button" data-download-export="json">
+                  JSON
+                </button>
+                <button
+                  class="button"
+                  type="button"
+                  data-download-export="netscape">
+                  Netscape .txt
+                </button>
+                <button
+                  class="button"
+                  type="button"
+                  data-download-export="headerstring">
+                  Headers .txt
+                </button>
+              </div>
+            </div>
+            <textarea
+              id="export-output"
+              class="code-area"
+              readonly
+              placeholder="Export output appears here"></textarea>
+          </section>
+          <section class="tool-section">
+            <h2>Import</h2>
+            <div id="dropzone" class="dropzone" tabindex="0">
+              <svg class="icon">
+                <use href="../sprites/solid.svg#file-import"></use>
+              </svg>
+              <span>Drop a cookie file or paste below</span>
+            </div>
+            <textarea
+              id="import-input"
+              class="code-area"
+              placeholder='[{"name":"session","value":"..."}]'></textarea>
+            <div class="import-meta">
+              <span id="import-detected">No format detected</span>
+              <span id="import-preview-count">0 cookies</span>
+            </div>
+            <div id="import-preview" class="preview-list"></div>
+            <button class="button primary" id="run-import" type="button">
+              Import Cookies
+            </button>
+          </section>
+        </section>
+      </main>
+      <div id="bulk-bar" class="bulk-bar" aria-live="polite">
+        <span id="bulk-count">0 selected</span>
+        <div class="bulk-profile-wrapper">
+          <button
+            class="text-button"
+            id="bulk-profile"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false">
+            Profile
+          </button>
+          <div
+            class="bulk-profile-menu"
+            id="bulk-profile-menu"
+            role="menu"
+            hidden>
+            <button
+              class="bulk-profile-menu-item"
+              type="button"
+              role="menuitem"
+              data-profile-action="create">
+              New profile
+            </button>
+            <label class="bulk-profile-picker" for="bulk-profile-select">
+              Update profile
+              <select id="bulk-profile-select"></select>
+            </label>
+            <button
+              class="bulk-profile-menu-item primary"
+              type="button"
+              role="menuitem"
+              data-profile-action="update">
+              Update
+            </button>
+          </div>
+        </div>
+        <button class="text-button" id="bulk-export" type="button">
+          Export
+        </button>
+        <button class="text-button danger" id="bulk-delete" type="button">
+          Delete
+        </button>
+        <button
+          class="icon-button"
+          id="bulk-clear"
+          type="button"
+          aria-label="Clear">
+          <svg class="icon">
+            <use href="../sprites/solid.svg#times"></use>
+          </svg>
+        </button>
+      </div>
+      <nav class="tab-nav" aria-label="Popup sections">
+        <button class="tab-button active" type="button" data-tab="cookies">
+          <svg class="icon">
+            <use href="../sprites/solid.svg#cookie-bite"></use>
+          </svg>
+          <span>Cookies</span>
+        </button>
+        <button class="tab-button" type="button" data-tab="profiles">
+          <svg class="icon">
+            <use href="../sprites/solid.svg#database"></use>
+          </svg>
+          <span>Profiles</span>
+        </button>
+        <button class="tab-button" type="button" data-tab="tools">
+          <svg class="icon">
+            <use href="../sprites/solid.svg#wrench"></use>
+          </svg>
+          <span>Tools</span>
+        </button>
+      </nav>
+    </div>
+    <div id="sidepanel-backdrop" class="sidepanel-backdrop" hidden></div>
+    <aside
+      id="cookie-sidepanel"
+      class="cookie-sidepanel"
+      hidden
+      aria-hidden="true"
+      aria-labelledby="sidepanel-title">
+      <form id="cookie-form" class="cookie-form">
+        <div class="sidepanel-header">
+          <div>
+            <h2 id="sidepanel-title">Edit Cookie</h2>
+            <p id="sidepanel-subtitle">Current tab</p>
+          </div>
+          <button
+            class="icon-button"
+            id="close-sidepanel"
+            type="button"
+            aria-label="Close editor">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#times"></use>
+            </svg>
+          </button>
+        </div>
+        <input id="cookie-id" name="id" type="hidden" />
+        <label>
+          Name
+          <input id="cookie-name" name="name" type="text" required />
+        </label>
+        <label>
+          Value
+          <textarea id="cookie-value" name="value" required></textarea>
+        </label>
+        <label>
+          Domain
+          <input id="cookie-domain" name="domain" type="text" />
+        </label>
+        <label>
+          Path
+          <input id="cookie-path" name="path" type="text" />
+        </label>
+        <label>
+          Expiration
+          <input id="cookie-expiration" name="expiration" type="datetime-local" />
+        </label>
+        <label>
+          SameSite
+          <select id="cookie-sameSite" name="sameSite">
+            <option value="">Unspecified</option>
+            <option value="no_restriction">None</option>
+            <option value="lax">Lax</option>
+            <option value="strict">Strict</option>
+          </select>
+        </label>
+        <div class="switch-grid">
+          <label>
+            <input id="cookie-hostOnly" name="hostOnly" type="checkbox" />
+            HostOnly
+          </label>
+          <label>
+            <input id="cookie-session" name="session" type="checkbox" />
+            Session
+          </label>
+          <label>
+            <input id="cookie-secure" name="secure" type="checkbox" />
+            Secure
+          </label>
+          <label>
+            <input id="cookie-httpOnly" name="httpOnly" type="checkbox" />
+            HttpOnly
+          </label>
+        </div>
+        <div class="sidepanel-actions">
+          <button class="button danger ghost" id="delete-cookie" type="button">
+            Delete
+          </button>
+          <button class="button ghost" id="cancel-cookie" type="button">
+            Cancel
+          </button>
+          <button class="button primary" type="submit">Save</button>
+        </div>
+      </form>
+    </aside>
+    <div id="settings-backdrop" class="sidepanel-backdrop" hidden></div>
+    <aside
+      id="settings-panel"
+      class="settings-panel"
+      hidden
+      aria-hidden="true"
+      aria-labelledby="settings-panel-title">
+      <div class="settings-panel-content">
+        <div class="sidepanel-header">
+          <div>
+            <h2 id="settings-panel-title">Settings</h2>
+            <p>Popup preferences</p>
+          </div>
+          <button
+            class="icon-button"
+            id="close-settings"
+            type="button"
+            aria-label="Close settings">
+            <svg class="icon">
+              <use href="../sprites/solid.svg#times"></use>
+            </svg>
+          </button>
+        </div>
+        <label class="setting-row">
+          Theme
+          <select id="theme-select">
+            <option value="auto">Auto</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span>Compact rows</span>
+          <input id="compact-toggle" type="checkbox" />
+        </label>
+        <label class="setting-row">
+          <span>Confirm before delete all</span>
+          <input id="confirm-delete-all" type="checkbox" checked />
+        </label>
+        <label class="setting-row">
+          Default export
+          <select id="default-export-format">
+            <option value="ask">Ask</option>
+            <option value="json">JSON</option>
+            <option value="netscape">Netscape</option>
+            <option value="headerstring">Headers</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          Export action
+          <select id="default-export-action">
+            <option value="ask">Ask</option>
+            <option value="download">Download</option>
+            <option value="copy">Copy</option>
+          </select>
+        </label>
+      </div>
+    </aside>
+    <div id="app-dialog-layer" class="dialog-layer" hidden>
+      <div id="app-dialog-backdrop" class="dialog-backdrop"></div>
+      <form
+        id="app-dialog"
+        class="app-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="app-dialog-title"
+        aria-describedby="app-dialog-message">
+        <div>
+          <h2 id="app-dialog-title">Confirm action</h2>
+          <p id="app-dialog-message"></p>
+        </div>
+        <label id="app-dialog-input-row" class="dialog-input-row" hidden>
+          <span id="app-dialog-input-label"></span>
+          <input id="app-dialog-input" type="text" autocomplete="off" />
+        </label>
+        <div class="dialog-actions">
+          <button class="button ghost" id="app-dialog-cancel" type="button">
+            Cancel
+          </button>
+          <button class="button primary" id="app-dialog-confirm" type="submit">
+            OK
+          </button>
+        </div>
+      </form>
+    </div>
+    <div id="snackbar" class="snackbar" role="status" aria-live="polite">
+      <span id="snackbar-message"></span>
+      <button id="snackbar-undo" type="button">Undo</button>
+      <button
+        id="snackbar-close"
+        class="icon-button"
+        type="button"
+        aria-label="Dismiss">
+        <svg class="icon">
+          <use href="../sprites/solid.svg#times"></use>
+        </svg>
+      </button>
+    </div>
+    <template id="tmp-empty-state">
+      <div class="empty-state">
+        <svg class="icon">
+          <use href="../sprites/solid.svg#cookie-bite"></use>
+        </svg>
+        <h2>No cookies found</h2>
+        <p>This page does not have cookies matching the current view.</p>
+        <div class="empty-actions">
+          <button class="button primary" type="button" data-action="create">
+            Create cookie
+          </button>
+          <button class="button" type="button" data-action="import">
+            Import cookies
+          </button>
+        </div>
+      </div>
+    </template>
+    <template id="tmp-profile-empty">
+      <div class="empty-state small">
+        <svg class="icon">
+          <use href="../sprites/solid.svg#database"></use>
+        </svg>
+        <h2>No profiles saved</h2>
+        <p>Save the current tab cookies as a reusable profile.</p>
+      </div>
+    </template>
     <script type="module" src="../popup/cookie-list.js"></script>
   </body>
 </html>

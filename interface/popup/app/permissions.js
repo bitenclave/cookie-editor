@@ -3,9 +3,11 @@ export const permissionMethods = {
     const isGlobal = permissionTarget === '<all_urls>';
     const notice = document.createElement('div');
     notice.className = 'notice';
-    notice.innerHTML = `<p>Cookie-Editor needs permission to read cookies for ${
+    const message = document.createElement('p');
+    message.textContent = `Cookie-Editor needs permission to read cookies for ${
       isGlobal ? 'all sites' : 'this page'
-    }.</p>`;
+    }.`;
+    notice.appendChild(message);
     const row = document.createElement('div');
     row.className = 'button-row';
     if (!isGlobal) {

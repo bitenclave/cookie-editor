@@ -214,7 +214,7 @@ export const cookieMethods = {
     const badge = document.createElement('span');
     badge.className = `badge ${className}`;
     badge.title = title;
-    badge.innerHTML = `<svg class="icon"><use href="../sprites/solid.svg#${icon}"></use></svg>`;
+    badge.appendChild(this.createIcon(icon));
     return badge;
   },
 
