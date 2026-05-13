@@ -92,9 +92,7 @@ export const utilityMethods = {
   },
 
   getCookieById(id) {
-    return this.state.cookies.find(
-      cookie => this.getCookieId(cookie) === String(id)
-    );
+    return this.state.cookieById.get(String(id));
   },
 
   normalizeCookieForStorage(cookie, options = {}) {
@@ -141,7 +139,11 @@ export const utilityMethods = {
   },
 
   sortProfilesByUpdatedAt(a, b) {
-    return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+    return (
+      getProfileDateValue(b.updatedAt || b.createdAt) -
+        getProfileDateValue(a.updatedAt || a.createdAt) ||
+      (a.name || '').localeCompare(b.name || '')
+    );
   },
 
   copyText(text) {
@@ -190,6 +192,27 @@ export const utilityMethods = {
     if (crypto?.randomUUID) {
       return crypto.randomUUID();
     }
-    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    if (!crypto?.getRandomValues) {
+      throw new Error('Secure browser crypto is unavailable');
+    }
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = [...bytes]
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+    return [
+      hex.slice(0, 8),
+      hex.slice(8, 12),
+      hex.slice(12, 16),
+      hex.slice(16, 20),
+      hex.slice(20),
+    ].join('-');
   },
 };
+
+function getProfileDateValue(value) {
+  const date = new Date(value || 0);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+}

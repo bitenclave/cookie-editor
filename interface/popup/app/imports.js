@@ -58,7 +58,7 @@ export const importMethods = {
       path: cookie.path || '/',
     }));
     if (!(await this.ensureImportPermissions(preparedCookies))) {
-      return;
+      return false;
     }
     const errors = await Promise.all(
       preparedCookies.map(cookie => this.saveCookie(cookie))
@@ -66,7 +66,7 @@ export const importMethods = {
     const firstError = errors.find(Boolean);
     if (firstError) {
       this.showSnackbar(firstError);
-      return;
+      return false;
     }
     this.showSnackbar(
       `${preparedCookies.length} cookie${
@@ -74,6 +74,7 @@ export const importMethods = {
       } imported`
     );
     this.refreshCookies();
+    return true;
   },
 
   async ensureImportPermissions(cookies) {

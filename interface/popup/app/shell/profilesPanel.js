@@ -16,7 +16,7 @@ export function profilesPanelTemplate() {
           <option value="">All groups</option>
         </select>
         <select id="profile-sort" aria-label="Sort profiles">
-          <option value="updated">Recent</option>
+          <option value="updated">Recently used</option>
           <option value="name">Name</option>
           <option value="group">Group</option>
           <option value="count">Cookie count</option>
@@ -30,6 +30,27 @@ export function profilesPanelTemplate() {
         </button>
       </div>
       <div id="profiles-list" class="profile-grid"></div>
+      <div id="profile-pagination" class="profile-pagination" hidden>
+        <span id="profile-pagination-status"></span>
+        <div class="profile-pagination-actions">
+          <button
+            class="icon-button"
+            id="profile-prev-page"
+            type="button"
+            title="Previous profiles"
+            aria-label="Previous profiles">
+            ${icon('angle-left')}
+          </button>
+          <button
+            class="icon-button"
+            id="profile-next-page"
+            type="button"
+            title="Next profiles"
+            aria-label="Next profiles">
+            ${icon('angle-right')}
+          </button>
+        </div>
+      </div>
       ${profileStorageTemplate()}
     </section>
   `;

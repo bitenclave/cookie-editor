@@ -1,0 +1,121 @@
+.sidepanel-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--sidepanel-backdrop-color);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.sidepanel-backdrop.visible {
+  opacity: 1;
+}
+
+.cookie-sidepanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  width: 430px;
+  max-width: 100%;
+  border-left: 1px solid var(--primary-border-color);
+  box-shadow: var(--shadow-raised);
+  background: var(--primary-surface-color);
+  transform: translateX(100%);
+  transition: transform 180ms ease;
+}
+
+.settings-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  width: 360px;
+  max-width: 100%;
+  border-left: 1px solid var(--primary-border-color);
+  box-shadow: var(--shadow-raised);
+  background: var(--primary-surface-color);
+  transform: translateX(100%);
+  transition: transform 180ms ease;
+}
+
+.cookie-sidepanel.open,
+.settings-panel.open {
+  transform: translateX(0);
+}
+
+body[data-active-overlay='settings'] .cookie-sidepanel,
+body[data-active-overlay='settings'] #sidepanel-backdrop,
+body[data-active-overlay='editor'] .settings-panel,
+body[data-active-overlay='editor'] #settings-backdrop {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body[data-active-overlay='settings'] .cookie-sidepanel,
+body[data-active-overlay='editor'] .settings-panel {
+  transform: translateX(100%);
+}
+
+.settings-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.cookie-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.cookie-form label {
+  display: grid;
+  gap: 5px;
+  color: var(--secondary-text-onsurface-color);
+  font-weight: 600;
+}
+
+.sidepanel-header {
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.sidepanel-header p {
+  margin: 2px 0 0;
+  color: var(--secondary-text-color);
+}
+
+.switch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.switch-grid label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  background: var(--secondary-surface-color);
+}
+
+.sidepanel-actions {
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}

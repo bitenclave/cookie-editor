@@ -1,0 +1,93 @@
+.export-actions {
+  margin-bottom: 10px;
+}
+
+.tool-section {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.tool-section h2 {
+  margin-bottom: 10px;
+}
+
+.tool-grid {
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tool-grid label {
+  flex: 1;
+}
+
+.dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 76px;
+  margin-bottom: 10px;
+  border: 1px dashed var(--dropzone-border-color);
+  border-radius: var(--radius-md);
+  color: var(--secondary-text-color);
+  background: var(--primary-surface-color);
+}
+
+.dropzone.active {
+  border-color: var(--dropzone-active-color);
+  background: var(--search-surface-hover-color);
+}
+
+.import-meta {
+  justify-content: space-between;
+  margin: 8px 0;
+  color: var(--secondary-text-color);
+}
+
+.preview-row {
+  padding: 8px 10px;
+}
+
+.setting-row {
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 42px;
+  border-top: 1px solid var(--primary-border-color);
+}
+
+.setting-row:first-of-type {
+  border-top: 0;
+}
+
+.setting-row select {
+  width: 150px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 34px 20px;
+  text-align: center;
+}
+
+.empty-state * {
+  text-align: center;
+}
+
+.empty-state > .icon {
+  width: 30px;
+  height: 30px;
+  color: var(--secondary-text-color);
+}
+
+.empty-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.empty-state.small {
+  padding: 24px 16px;
+}

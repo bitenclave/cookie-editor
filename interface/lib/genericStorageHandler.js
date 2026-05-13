@@ -65,4 +65,74 @@ export class GenericStorageHandler extends EventEmitter {
       });
     }
   }
+
+  async getSession(key) {
+    const storage = this.getSessionStorageArea();
+    if (!storage) {
+      return this.getWindowSessionValue(key);
+    }
+    const data = await this.getStorageValue(storage, key);
+    return data[key] ?? null;
+  }
+
+  async setSession(key, data) {
+    const storage = this.getSessionStorageArea();
+    if (!storage) {
+      this.setWindowSessionValue(key, data);
+      return;
+    }
+    await this.setStorageValue(storage, key, data);
+  }
+
+  getSessionStorageArea() {
+    return this.browserDetector.getApi().storage?.session || null;
+  }
+
+  getStorageValue(storage, key) {
+    const self = this;
+    if (this.browserDetector.supportsPromises()) {
+      return storage.get([key]);
+    }
+    return new Promise((resolve, reject) => {
+      storage.get([key], data => {
+        const error = self.browserDetector.getApi().runtime.lastError;
+        if (error) {
+          reject(error);
+        }
+        resolve(data ?? null);
+      });
+    });
+  }
+
+  setStorageValue(storage, key, data) {
+    const self = this;
+    const dataObj = {};
+    dataObj[key] = data;
+    if (this.browserDetector.supportsPromises()) {
+      return storage.set(dataObj);
+    }
+    return new Promise((resolve, reject) => {
+      storage.set(dataObj, () => {
+        const error = self.browserDetector.getApi().runtime.lastError;
+        if (error) {
+          reject(error);
+        }
+        resolve();
+      });
+    });
+  }
+
+  getWindowSessionValue(key) {
+    if (!window.sessionStorage) {
+      return null;
+    }
+    const value = window.sessionStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  }
+
+  setWindowSessionValue(key, data) {
+    if (window.sessionStorage) {
+      window.sessionStorage.setItem(key, JSON.stringify(data));
+    }
+  }
 }

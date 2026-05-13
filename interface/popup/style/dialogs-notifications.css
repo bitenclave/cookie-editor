@@ -1,0 +1,159 @@
+.snackbar {
+  position: absolute;
+  right: 16px;
+  bottom: 72px;
+  left: 16px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 8px 8px 14px;
+  border-radius: var(--radius-md);
+  color: var(--notification-text-color);
+  box-shadow: var(--shadow-raised);
+  background: var(--snackbar-surface-color);
+  transform: translateY(18px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.snackbar.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#snackbar-message {
+  flex: 1;
+}
+
+#snackbar-undo {
+  display: none;
+  border: 0;
+  color: var(--snackbar-undo-color);
+  background: transparent;
+  font-weight: 700;
+}
+
+.snackbar.has-undo #snackbar-undo {
+  display: block;
+}
+
+.snackbar .icon-button {
+  color: var(--notification-text-color);
+  border: 0;
+  background: transparent;
+}
+
+.notice {
+  padding: 12px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  background: var(--card-surface-color);
+}
+
+.notice .button-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dialog-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.dialog-layer.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--sidepanel-backdrop-color);
+}
+
+.app-dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  width: min(360px, 100%);
+  padding: 16px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--primary-text-color);
+  box-shadow: var(--shadow-raised);
+  background: var(--primary-surface-color);
+  transform: translateY(8px) scale(0.98);
+  transition: transform 180ms ease;
+}
+
+.app-dialog.open {
+  transform: translateY(0) scale(1);
+}
+
+.app-dialog p {
+  margin-top: 5px;
+  color: var(--secondary-text-color);
+}
+
+.dialog-input-row {
+  display: grid;
+  gap: 6px;
+  color: var(--secondary-text-onsurface-color);
+  font-weight: 600;
+}
+
+.dialog-input-row input {
+  min-width: 0;
+  width: 100%;
+  height: var(--field-height);
+  padding: 0 10px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--primary-text-color);
+  background: var(--primary-surface-color);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.anim-success {
+  animation: success 500ms ease;
+}
+
+@keyframes success {
+  50% {
+    background: var(--success-surface-color);
+  }
+}
+
+@media (max-width: 440px) {
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  .toolbar .search-field {
+    flex-basis: 100%;
+  }
+
+  .badge-row {
+    max-width: 92px;
+  }
+}

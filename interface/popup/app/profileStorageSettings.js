@@ -51,16 +51,17 @@ export const profileStorageSettingsMethods = {
   },
 
   async saveProfileStorageSettings() {
-    const settings = this.readProfileStorageSettings();
+    let settings = this.readProfileStorageSettings();
     try {
       if (settings.mode === 'cloud') {
-        await this.ensureCloudProfileAccess(settings);
+        settings = await this.ensureCloudProfileAccess(settings);
       }
       settings.configured = true;
       this.state.profileStorage =
         await this.profileStore.saveSettings(settings);
       await this.loadProfiles();
       this.renderProfileStorageMode();
+      this.startProfileAutoRefresh();
       await this.setProfileStorageDisclosureOpen(false);
       this.showSnackbar('Profile storage saved');
     } catch (error) {
@@ -69,9 +70,13 @@ export const profileStorageSettingsMethods = {
   },
 
   async testProfileStorageSettings() {
-    const settings = this.readProfileStorageSettings();
+    let settings = this.readProfileStorageSettings();
     try {
-      await this.ensureCloudProfileAccess(settings);
+      settings = await this.ensureCloudProfileAccess(settings);
+      this.state.profileStorage = {
+        ...this.state.profileStorage,
+        ...settings,
+      };
       this.showSnackbar('Cloud server connected');
     } catch (error) {
       this.showSnackbar(error.message || 'Cloud server failed');
@@ -100,6 +105,11 @@ export const profileStorageSettingsMethods = {
       return;
     }
     try {
+      const settings = await this.ensureCloudProfileTransferAllowed(
+        this.state.profileStorage
+      );
+      this.state.profileStorage =
+        await this.profileStore.saveSettings(settings);
       const count = await this.profileStore.pushLocalProfiles(
         this.state.profileStorage
       );
@@ -136,13 +146,58 @@ export const profileStorageSettingsMethods = {
   },
 
   async ensureCloudProfileAccess(settings) {
+    settings = await this.ensureCloudProfileTransferAllowed(settings);
+    await this.profileStore.test(settings);
+    return settings;
+  },
+
+  async ensureCloudProfileTransferAllowed(settings) {
     if (!settings.serverUrl || !settings.token) {
       throw new Error('Enter server URL and token');
     }
+    settings = await this.confirmInsecureProfileServer(settings);
     if (!(await this.profileStore.ensureCloudPermission(settings.serverUrl))) {
       throw new Error('Server permission denied');
     }
-    await this.profileStore.test(settings);
+    return settings;
+  },
+
+  async confirmInsecureProfileServer(settings) {
+    if (
+      !this.profileStore.isInsecureRemoteServer(settings.serverUrl) ||
+      settings.acceptedInsecureHttpWarning
+    ) {
+      return settings;
+    }
+
+    const accepted = await this.confirmDialog({
+      title: 'Use unencrypted HTTP?',
+      message:
+        'Cloud Sync over HTTP can expose profile data and auth proofs on the network unless the server is localhost. Continue with HTTP?',
+      confirmLabel: 'Use HTTP',
+      cancelLabel: 'Switch to HTTPS',
+      variant: 'danger',
+    });
+
+    const updatedSettings = this.profileStore.normalizeSettings({
+      ...settings,
+      acceptedInsecureHttpWarning: accepted,
+      serverUrl: accepted
+        ? settings.serverUrl
+        : this.profileStore.upgradeToHttps(settings.serverUrl),
+    });
+
+    this.els.profileServerUrl.value = updatedSettings.serverUrl;
+    this.state.profileStorage = {
+      ...this.state.profileStorage,
+      ...updatedSettings,
+    };
+
+    if (!accepted) {
+      this.showSnackbar('Server URL changed to HTTPS');
+    }
+
+    return updatedSettings;
   },
 
   renderProfileGroupOptions() {

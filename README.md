@@ -6,14 +6,26 @@ importing and exporting cookies for the current tab.
 This repository is maintained by the BitEnclave Team at
 https://github.com/bitenclave/cookie-editor.
 
+Available in browser stores:
+
+<a href="https://addons.mozilla.org/ru/firefox/addon/cookie-editor-enclave/"><img src="assets/badges/firefox-add-ons.png" alt="Get the add-on for Firefox" height="60"></a>
+<a href="https://chromewebstore.google.com/detail/gieaaboadafdijjoamoeeokabfddiplg"><img src="assets/badges/chrome-web-store.png" alt="Available in the Chrome Web Store" height="60"></a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/odbliigjdahnmnhgjnfmdgengfdlmccc"><img src="assets/badges/microsoft-edge-add-ons.png" alt="Get it from Microsoft Edge" height="60"></a>
+
 ## Download
 
-This fork is distributed only through GitHub Releases:
+Install Cookie-Editor from your browser's extension store:
+
+- [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/cookie-editor-enclave/)
+- [Chrome Web Store](https://chromewebstore.google.com/detail/gieaaboadafdijjoamoeeokabfddiplg)
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/odbliigjdahnmnhgjnfmdgengfdlmccc)
+
+Release packages are also available from GitHub Releases:
 
 https://github.com/bitenclave/cookie-editor/releases
 
-Download the latest release package from that page and install it manually in
-your browser as an unpacked or sideloaded extension.
+Download the latest release package from that page if you need to install it
+manually as an unpacked or sideloaded extension.
 
 ## Description
 
@@ -41,8 +53,7 @@ profile sync backed by your own PostgreSQL database and bearer-token auth.
 
 ## Browser support
 
-This fork is intended for manual installation from the release builds. Browser
-store links for the original extension are intentionally not included here.
+This fork supports Firefox, Chrome, Microsoft Edge, Opera, and Safari builds.
 
 ## Feature suggestions or bug reports
 

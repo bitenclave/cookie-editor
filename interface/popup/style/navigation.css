@@ -1,0 +1,143 @@
+.tab-nav {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  height: 62px;
+  padding: 6px 10px 7px;
+  border-top: 1px solid var(--primary-border-color);
+  background: var(--nav-surface-color);
+}
+
+.tab-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--secondary-text-color);
+  background: transparent;
+  text-align: center;
+}
+
+.tab-button .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.tab-button span {
+  width: 100%;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab-button.active {
+  color: var(--nav-active-color);
+  background: var(--nav-active-surface-color);
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--nav-active-color);
+  transform: translateX(-50%);
+}
+
+.bulk-bar {
+  position: absolute;
+  right: 12px;
+  bottom: 70px;
+  left: 12px;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 7px 9px 7px 13px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  background: var(--primary-surface-color);
+  transform: translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.bulk-bar.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#bulk-count {
+  flex: 1;
+  font-weight: 600;
+}
+
+.bulk-profile-wrapper {
+  position: relative;
+}
+
+.bulk-profile-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 10;
+  display: grid;
+  gap: 8px;
+  width: 236px;
+  padding: 10px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  background: var(--primary-surface-color);
+}
+
+.bulk-profile-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--primary-text-color);
+  background: var(--primary-surface-color);
+}
+
+.bulk-profile-menu-item.primary {
+  border-color: transparent;
+  color: var(--button-primary-text-color);
+  background: var(--button-primary-surface-color);
+}
+
+.bulk-profile-picker {
+  display: grid;
+  gap: 5px;
+  color: var(--secondary-text-color);
+}
+
+.bulk-profile-picker select {
+  width: 100%;
+}

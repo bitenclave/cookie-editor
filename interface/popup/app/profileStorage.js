@@ -1,28 +1,41 @@
+import { PROFILE_STORAGE_KEY, PROFILE_SYNC_KEY } from './constants.js';
+import { ProfileDeviceIdentity } from './profileStorage/deviceIdentity.js';
 import {
-  DEFAULT_PROFILE_STORAGE_SETTINGS,
-  PROFILE_STORAGE_KEY,
-  PROFILE_STORAGE_SETTINGS_KEY,
-} from './constants.js';
+  normalizeProfile,
+  normalizeSettings,
+  toRemoteProfile,
+} from './profileStorage/normalizers.js';
+import { RemoteProfileClient } from './profileStorage/remoteProfileClient.js';
+import {
+  buildUrl,
+  isInsecureRemoteServer,
+  toPermissionOrigin,
+  upgradeToHttps,
+} from './profileStorage/security.js';
+import { ProfileStorageSettingsStore } from './profileStorage/settingsStore.js';
+import { ProfileTokenCrypto } from './profileStorage/tokenCrypto.js';
 
 export class ProfileStorage {
   constructor(storageHandler, browserDetector) {
     this.storageHandler = storageHandler;
     this.browserDetector = browserDetector;
+
+    this.deviceIdentity = new ProfileDeviceIdentity(storageHandler);
+    this.tokenCrypto = new ProfileTokenCrypto(this.deviceIdentity);
+    this.settingsStore = new ProfileStorageSettingsStore(
+      storageHandler,
+      this.tokenCrypto,
+      this.deviceIdentity
+    );
+    this.remoteClient = new RemoteProfileClient(this.tokenCrypto);
   }
 
-  async loadSettings() {
-    return this.normalizeSettings(
-      await this.storageHandler.getLocal(PROFILE_STORAGE_SETTINGS_KEY)
-    );
+  loadSettings() {
+    return this.settingsStore.load();
   }
 
-  async saveSettings(settings) {
-    const normalized = this.normalizeSettings(settings);
-    await this.storageHandler.setLocal(
-      PROFILE_STORAGE_SETTINGS_KEY,
-      normalized
-    );
-    return normalized;
+  saveSettings(settings) {
+    return this.settingsStore.save(settings);
   }
 
   async getProfiles(settings) {
@@ -41,11 +54,23 @@ export class ProfileStorage {
   }
 
   async getLocalProfiles() {
-    return (await this.storageHandler.getLocal(PROFILE_STORAGE_KEY)) || [];
+    const profiles = await this.storageHandler.getLocal(PROFILE_STORAGE_KEY);
+    return (profiles || []).map(profile => normalizeProfile(profile));
   }
 
   async setLocalProfiles(profiles) {
-    await this.storageHandler.setLocal(PROFILE_STORAGE_KEY, profiles);
+    await this.storageHandler.setLocal(
+      PROFILE_STORAGE_KEY,
+      profiles.map(profile => normalizeProfile(profile))
+    );
+  }
+
+  async notifyProfilesChanged(sourceId, mode) {
+    await this.storageHandler.setLocal(PROFILE_SYNC_KEY, {
+      at: new Date().toISOString(),
+      mode,
+      sourceId,
+    });
   }
 
   async test(settings) {
@@ -70,85 +95,43 @@ export class ProfileStorage {
     return api.permissions.request({ origins: [origin] });
   }
 
-  async fetchRemoteProfiles(settings) {
-    const data = await this.request(settings, '/api/profiles');
-    return (data.profiles || []).map(profile => this.normalizeProfile(profile));
+  fetchRemoteProfiles(settings) {
+    return this.remoteClient.fetchProfiles(settings);
   }
 
-  async replaceRemoteProfiles(settings, profiles) {
-    const data = await this.request(settings, '/api/profiles', {
-      method: 'PUT',
-      body: JSON.stringify({
-        profiles: profiles.map(profile => this.toRemoteProfile(profile)),
-      }),
-    });
-    return (data.profiles || []).map(profile => this.normalizeProfile(profile));
+  replaceRemoteProfiles(settings, profiles) {
+    return this.remoteClient.replaceProfiles(settings, profiles);
   }
 
-  async request(settings, path, options = {}) {
-    const response = await fetch(this.buildUrl(settings.serverUrl, path), {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${settings.token}`,
-        'Content-Type': 'application/json',
-        ...(options.headers || {}),
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}`);
-    }
-    return response.json();
+  request(settings, path, options = {}) {
+    return this.remoteClient.request(settings, path, options);
   }
 
   normalizeSettings(settings = {}) {
-    const normalizedSettings = {
-      ...DEFAULT_PROFILE_STORAGE_SETTINGS,
-      ...(settings || {}),
-    };
-
-    return {
-      ...normalizedSettings,
-      mode: normalizedSettings.mode === 'cloud' ? 'cloud' : 'local',
-      serverUrl: String(normalizedSettings.serverUrl || '')
-        .trim()
-        .replace(/\/+$/, ''),
-      token: String(normalizedSettings.token || '').trim(),
-    };
+    return normalizeSettings(settings);
   }
 
-  normalizeProfile(profile) {
-    return {
-      ...profile,
-      groupName: profile.groupName || profile.group || 'Default',
-      cookies: Array.isArray(profile.cookies) ? profile.cookies : [],
-    };
+  normalizeProfile(profile = {}) {
+    return normalizeProfile(profile);
   }
 
   toRemoteProfile(profile) {
-    return {
-      id: this.isUuid(profile.id) ? profile.id : undefined,
-      name: profile.name,
-      group: profile.groupName || profile.group || 'Default',
-      cookies: Array.isArray(profile.cookies) ? profile.cookies : [],
-      tags: Array.isArray(profile.tags) ? profile.tags : [],
-    };
+    return toRemoteProfile(profile);
   }
 
   buildUrl(serverUrl, path) {
-    if (!serverUrl) {
-      throw new Error('Enter a server URL');
-    }
-    return new URL(path, `${serverUrl}/`).toString();
+    return buildUrl(serverUrl, path);
+  }
+
+  isInsecureRemoteServer(serverUrl) {
+    return isInsecureRemoteServer(serverUrl);
+  }
+
+  upgradeToHttps(serverUrl) {
+    return upgradeToHttps(serverUrl);
   }
 
   toPermissionOrigin(serverUrl) {
-    const url = new URL(serverUrl);
-    return `${url.protocol}//${url.host}/*`;
-  }
-
-  isUuid(value) {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-      String(value || '')
-    );
+    return toPermissionOrigin(serverUrl);
   }
 }

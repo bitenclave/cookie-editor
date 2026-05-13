@@ -159,6 +159,7 @@ function registerTasks(grunt) {
     'clean:safari',
     'copy:safari',
     'replace:safari',
+    'removelogging',
   ]);
 }
 

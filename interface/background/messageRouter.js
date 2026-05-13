@@ -53,6 +53,9 @@ function getCurrentTab(browserDetector, sendResponse) {
 
 function getAllCookies(browserDetector, request, sendResponse) {
   const params = { url: request.params.url };
+  if (request.params.storeId) {
+    params.storeId = request.params.storeId;
+  }
   if (browserDetector.supportsPromises()) {
     browserDetector.getApi().cookies.getAll(params).then(sendResponse);
   } else {
@@ -96,6 +99,9 @@ function removeCookie(browserDetector, request, sendResponse) {
     name: request.params.name,
     url: request.params.url,
   };
+  if (request.params.storeId) {
+    params.storeId = request.params.storeId;
+  }
   if (browserDetector.supportsPromises()) {
     browserDetector.getApi().cookies.remove(params).then(sendResponse);
   } else {

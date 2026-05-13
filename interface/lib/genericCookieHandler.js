@@ -20,25 +20,43 @@ export class GenericCookieHandler extends EventEmitter {
    * @param {function} callback
    */
   getAllCookies(callback) {
+    this.getAllCookiesForTab(this.currentTab, callback);
+  }
+
+  /**
+   * Gets all cookies for a specific tab URL and cookie store.
+   * @param {object} tab
+   * @param {function} callback
+   */
+  getAllCookiesForTab(tab, callback) {
+    const params = this.getCookieQueryForTab(tab);
     if (this.browserDetector.supportsPromises()) {
       this.browserDetector
         .getApi()
-        .cookies.getAll({
-          url: this.currentTab.url,
-          storeId: this.currentTab.cookieStoreId,
-        })
-        .then(callback, function (e) {
+        .cookies.getAll(params)
+        .then(callback, e => {
           console.error('Failed to retrieve cookies', e);
+          callback([]);
         });
     } else {
-      this.browserDetector.getApi().cookies.getAll(
-        {
-          url: this.currentTab.url,
-          storeId: this.currentTab.cookieStoreId,
-        },
-        callback
-      );
+      this.browserDetector.getApi().cookies.getAll(params, cookies => {
+        const error = this.browserDetector.getApi().runtime.lastError;
+        if (error) {
+          console.error('Failed to retrieve cookies', error);
+          callback([]);
+          return;
+        }
+        callback(cookies);
+      });
     }
+  }
+
+  getCookieQueryForTab(tab) {
+    const params = { url: tab?.url || '' };
+    if (tab?.cookieStoreId) {
+      params.storeId = tab.cookieStoreId;
+    }
+    return params;
   }
 
   /**
@@ -203,11 +221,20 @@ export class GenericCookieHandler extends EventEmitter {
       this.browserDetector
         .getApi()
         .cookies.getAll({})
-        .then(callback, function (e) {
+        .then(callback, e => {
           console.error('Failed to retrieve cookies', e);
+          callback([]);
         });
     } else {
-      this.browserDetector.getApi().cookies.getAll({}, callback);
+      this.browserDetector.getApi().cookies.getAll({}, cookies => {
+        const error = this.browserDetector.getApi().runtime.lastError;
+        if (error) {
+          console.error('Failed to retrieve cookies', error);
+          callback([]);
+          return;
+        }
+        callback(cookies);
+      });
     }
   }
 }

@@ -45,15 +45,18 @@ export const exportMethods = {
     if (format !== ExportFormats.Ask) {
       this.els.exportFormat.value = format;
     }
-    this.updateExportOutput();
+    this.updateExportOutput({ force: true });
     (format === ExportFormats.Ask
       ? this.els.exportFormat
       : this.els.copyExport
     ).focus();
   },
 
-  updateExportOutput() {
+  updateExportOutput(options = {}) {
     if (!this.els.exportOutput) {
+      return;
+    }
+    if (!options.force && this.state.activeTab !== 'tools') {
       return;
     }
     const cookies = this.getCookiesForExport();
@@ -96,7 +99,7 @@ export const exportMethods = {
   },
 
   copyExportOutput() {
-    this.updateExportOutput();
+    this.updateExportOutput({ force: true });
     if (!this.els.exportOutput.value) {
       this.showSnackbar('No cookies to export');
       return;

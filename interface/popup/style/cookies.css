@@ -1,0 +1,194 @@
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cookie-list {
+  display: grid;
+  gap: 8px;
+}
+
+.cookie-row,
+.profile-card,
+.preview-row,
+.tool-section,
+.empty-state {
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  background: var(--card-surface-color);
+}
+
+.cookie-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.cookie-row:hover {
+  transform: translateY(-1px);
+  background: var(--card-hover-color);
+}
+
+.cookie-busy .cookie-row:hover {
+  transform: none;
+}
+
+body.compact .cookie-row {
+  padding: 9px 10px;
+}
+
+.cookie-list-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 14px;
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--secondary-text-color);
+  background: var(--card-surface-color);
+}
+
+.cookie-list-status-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cookie-list-status strong {
+  color: var(--primary-text-color);
+}
+
+.cookie-list-more {
+  display: flex;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px dashed var(--primary-border-color);
+  border-radius: var(--radius-md);
+  color: var(--secondary-text-color);
+  background: var(--card-surface-color);
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  border: 2px solid var(--primary-border-color);
+  border-top-color: var(--primary-outline-color);
+  border-radius: 50%;
+  animation: cookie-loading-spin 800ms linear infinite;
+}
+
+@keyframes cookie-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cookie-select {
+  margin-top: 7px;
+}
+
+.cookie-main {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  color: var(--primary-text-color);
+  background: transparent;
+}
+
+.cookie-main:hover {
+  background: transparent;
+}
+
+.cookie-name-line,
+.cookie-meta-line,
+.profile-card-header,
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cookie-name-line {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cookie-name,
+.profile-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cookie-value,
+.cookie-meta,
+.profile-meta {
+  color: var(--secondary-text-color);
+}
+
+.cookie-value {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cookie-meta {
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+  flex: 0 0 auto;
+  max-width: 128px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  color: var(--primary-text-color);
+  background: var(--secondary-surface-color);
+}
+
+.badge.secure {
+  color: var(--badge-secure-color);
+}
+
+.badge.session {
+  color: var(--badge-session-color);
+}
+
+.badge.httpOnly {
+  color: var(--badge-httponly-color);
+}
+
+.badge.sameSite,
+.badge.hostOnly {
+  color: var(--secondary-text-color);
+}

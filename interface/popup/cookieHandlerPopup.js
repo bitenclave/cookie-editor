@@ -57,14 +57,40 @@ export class CookieHandlerPopup extends GenericCookieHandler {
       return;
     }
 
-    const domain = changeInfo.cookie.domain.replace(/^\./, '');
-    if (
-      this.currentTab.url.indexOf(domain) !== -1 &&
-      changeInfo.cookie.storeId === (this.currentTab.cookieStoreId || '0')
-    ) {
+    if (this.cookieChangeAppliesToCurrentTab(changeInfo)) {
       this.emit('cookiesChanged', changeInfo);
     }
   };
+
+  cookieChangeAppliesToCurrentTab(changeInfo) {
+    if (!this.currentTab?.url || !changeInfo?.cookie) {
+      return false;
+    }
+    if (!this.cookieStoresMatch(changeInfo.cookie)) {
+      return false;
+    }
+    try {
+      const tabHost = new URL(this.currentTab.url).hostname.toLowerCase();
+      const cookieDomain = String(changeInfo.cookie.domain || '')
+        .replace(/^\./, '')
+        .toLowerCase();
+      return Boolean(
+        tabHost &&
+        cookieDomain &&
+        (tabHost === cookieDomain ||
+          (!changeInfo.cookie.hostOnly && tabHost.endsWith(`.${cookieDomain}`)))
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  cookieStoresMatch(cookie) {
+    return (
+      !cookie.storeId ||
+      cookie.storeId === (this.currentTab.cookieStoreId || '0')
+    );
+  }
 
   /**
    * Updates how broadly cookie change events should refresh the popup.

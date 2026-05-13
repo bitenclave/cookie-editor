@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Cookie-Editor",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"author": "BitEnclave Team",
 	"description": "A powerful Cookie Editor for tab-based and global cookie management, with fast editing tools and cloud sync.",
 	"offline_enabled": true,

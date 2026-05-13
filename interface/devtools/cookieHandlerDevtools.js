@@ -111,11 +111,36 @@ export class CookieHandlerDevtools extends GenericCookieHandler {
    *     occurred.
    */
   onCookiesChanged = changeInfo => {
-    const domain = changeInfo.cookie.domain.substring(1);
-    if (this.currentTab.url.indexOf(domain) !== -1) {
+    if (this.cookieChangeAppliesToCurrentTab(changeInfo)) {
       this.emit('cookiesChanged', changeInfo);
     }
   };
+
+  cookieChangeAppliesToCurrentTab(changeInfo) {
+    if (!this.currentTab?.url || !changeInfo?.cookie) {
+      return false;
+    }
+    if (
+      changeInfo.cookie.storeId &&
+      changeInfo.cookie.storeId !== (this.currentTab.cookieStoreId || '0')
+    ) {
+      return false;
+    }
+    try {
+      const tabHost = new URL(this.currentTab.url).hostname.toLowerCase();
+      const cookieDomain = String(changeInfo.cookie.domain || '')
+        .replace(/^\./, '')
+        .toLowerCase();
+      return Boolean(
+        tabHost &&
+        cookieDomain &&
+        (tabHost === cookieDomain ||
+          (!changeInfo.cookie.hostOnly && tabHost.endsWith(`.${cookieDomain}`)))
+      );
+    } catch {
+      return false;
+    }
+  }
 
   /**
    * Handles the event that is fired when a tab is updated.
@@ -139,9 +164,10 @@ export class CookieHandlerDevtools extends GenericCookieHandler {
       'getCurrentTab',
       null,
       function (tabInfo) {
+        const currentTab = self.currentTab || {};
         const newTab =
           tabInfo[0].id !== self.currentTabId ||
-          tabInfo[0].url !== self.currentTab.url;
+          tabInfo[0].url !== currentTab.url;
         self.currentTabId = tabInfo[0].id;
         self.currentTab = tabInfo[0];
         if (newTab && self.isReady) {
